@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User_table</title>
+</head>
+<body>
+	<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+
+}
+th, td {
+  padding: 5px;
+}
+th {
+  text-align: left;
+}
+caption{
+color:blue;
+}
+</style>
+
+ <table style="width: 70%" id="student_list">
+ 	<caption>Telebelerin siyahisi</caption>
+ 	
+ 		<tr>
+ 			<th>Name</th>
+ 			<th>Surname</th>
+ 			<th>Birthday</th>
+ 		</tr>
+
+ </table><br><br>
+
+<script type="text/javascript">
+
+	window.onload = function(e){	      
+        var url="https://student-list-show.herokuapp.com/list/student";
+        getDat(url, 'student');
+        var url="https://student-list-show.herokuapp.com/list/teacher";
+        getDat(url, 'teacher');
+
+       
+	}
+
+    function getDat(url,name){ 	
+     var req = new XMLHttpRequest();
+      req.onload = function() {
+	    var response = JSON.parse(req.responseText); 
+	       if(name==='student'){
+	       	mapStudentToTable(response);
+	       }
+	       if(name==='teacher'){
+	       	mapTeacherToTable(response);
+	       
+	       }
+
+      }
+      req.open("GET",url);
+      req.send();
+    }
+
+	
+  function mapStudentToTable(user_list){      
+    var thisElement = document.getElementById('student_list');
+	for (var i in user_list){
+
+     thisElement.innerHTML = thisElement.innerHTML
+      + "<tr><td>" + user_list[i].name +"</td> "
+      + "<td>" + user_list[i].surname +"</td>"
+      + "<td>" + user_list[i].birthDate +"</td></tr>";
+
+    }
+}
+
+    function mapTeacherToTable(teacher_list) {
+		var thisElement = document.getElementById('teacher_list');
+		for (i in teacher_list) {
+			thisElement.innerHTML=thisElement.innerHTML
+			+"<tr><td>" + teacher_list[i].id + "</td>" 
+			+"<td>"+ teacher_list[i].name + "</td>"
+		    + "<td>"+ teacher_list[i].surname + "</td></tr>";
+			
+		}
+	} 
+
+    
+</script>
+<table style="width: 70%" id="teacher_list">
+	<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Surname</th>
+	</tr>
+</table>
+</body>
+</html>
